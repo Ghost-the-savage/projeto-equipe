@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Sistema de Gestão Escolar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <div id="app" class="min-h-screen flex flex-col">
+        <div id="login-screen" class="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-500 to-blue-700 p-4 fade-in">
+            <div class="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md slide-in">
+                <div class="text-center mb-8">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/5024faf4-2a93-4bb9-9263-dcbd0c154efa.png" alt="School Food System Logo" class="mx-auto h-24 w-24 mb-4">
+                    <h1 class="text-3xl font-bold text-gray-800">Sistema de Gestão</h1>
+                    <p class="text-gray-600 mt-2">Controle de Estoque Escolar</p>
+                </div>
+                <form id="login-form" class="space-y-6">
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-700">Usuário</label>
+                        <input type="text" id="username" required class="mt-1 block w-full px-4 py-2 border rounded-md">
+                    </div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700">Senha</label>
+                        <input type="password" id="password" required class="mt-1 block w-full px-4 py-2 border rounded-md">
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">
+                        Entrar
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div id="main-content" class="hidden flex-1 flex flex-col">
+            <header class="bg-white shadow-sm">
+                <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+                    <h1 class="text-xl font-semibold">Gestão de Alimentos</h1>
+                    <div class="flex items-center space-x-4">
+                        <span id="current-user" class="font-medium"></span>
+                        <button onclick="logout()" class="text-blue-600 hover:text-blue-800">Sair</button>
+                    </div>
+                </div>
+                <nav class="bg-blue-600">
+                    <div class="max-w-7xl mx-auto px-4">
+                        <div class="flex space-x-8">
+                            <button onclick="showPage('stock-page')" class="py-4 px-1 border-b-2 border-transparent text-white hover:border-white">
+                                Estoque
+                            </button>
+                            <button onclick="showPage('reports-page')" class="py-4 px-1 border-b-2 border-transparent text-white hover:border-white">
+                                Relatórios
+                            </button>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+            <div id="stock-page" class="hidden flex-1 p-6">
+                <h2 class="text-2xl font-bold mb-6">Gerenciamento de Estoque</h2>
+                <table id="products-table" class="min-w-full bg-white shadow rounded-lg">
+                    <thead>
+                        <tr>
+                            <th class="px-6 py-3 text-left">Produto</th>
+                            <th class="px-6 py-3 text-left">Quantidade</th>
+                            <th class="px-6 py-3 text-left">Unidade</th>
+                            <th class="px-6 py-3 text-left">Validade</th>
+                            <th class="px-6 py-3 text-left">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <div class="mt-4 space-x-4">
+                    <button onclick="showPage('add-product-page')" class="bg-blue-600 text-white px-4 py-2 rounded">
+                        Adicionar Produto
+                    </button>
+                    <button onclick="showPage('report-item-page')" class="bg-red-600 text-white px-4 py-2 rounded">
+                        Reportar Problema
+                    </button>
+                </div>
+            </div>
+            <div id="report-item-page" class="hidden flex-1 p-6">
+                <div class="max-w-2xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6">Reportar Problema</h2>
+                    <div class="bg-white shadow rounded-lg p-6">
+                        <form id="report-form" class="space-y-4">
+                            <div>
+                                <label class="block mb-2">Produto com problema</label>
+                                <select id="report-product" class="w-full p-2 border rounded">
+                                    <option value="">Selecione um produto</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block mb-2">Tipo de problema</label>
+                                <select id="report-type" class="w-full p-2 border rounded">
+                                    <option value="verde">Produto verde/não maduro</option>
+                                    <option value="estragado">Produto estragado</option>
+                                    <option value="quantidade">Quantidade incorreta</option>
+                                    <option value="outro">Outro problema</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block mb-2">Descrição</label>
+                                <textarea id="report-desc" class="w-full p-2 border rounded" rows="4"></textarea>
+                            </div>
+                            <div class="flex justify-end space-x-4">
+                                <button type="button" onclick="showPage('stock-page')" class="px-4 py-2 bg-gray-300 rounded">
+                                    Cancelar
+                                </button>
+                                <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded">
+                                    Enviar Relatório
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div id="reports-page" class="hidden flex-1 p-6">
+                <h2 class="text-2xl font-bold mb-6">Relatórios de Problemas</h2>
+                <div class="bg-white shadow rounded-lg p-6">
+                    <table id="reports-table" class="w-full">
+                        <thead>
+                            <tr class="border-b">
+                                <th class="text-left p-2">Produto</th>
+                                <th class="text-left p-2">Tipo</th>
+                                <th class="text-left p-2">Data</th>
+                                <th class="text-left p-2">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="add-product-page" class="hidden flex-1 p-6">
+                <div class="max-w-2xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6">Adicionar Novo Produto</h2>
+                    <div class="bg-white shadow rounded-lg p-6">
+                        <form id="add-product-form" class="space-y-4">
+                            <div>
+                                <label class="block mb-2">Nome do Produto</label>
+                                <input type="text" id="add-name" class="w-full p-2 border rounded" required>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block mb-2">Quantidade</label>
+                                    <input type="number" id="add-quantity" class="w-full p-2 border rounded" required>
+                                </div>
+                                <div>
+                                    <label class="block mb-2">Unidade</label>
+                                    <select id="add-unit" class="w-full p-2 border rounded">
+                                        <option value="kg">kg</option>
+                                        <option value="un">un</option>
+                                        <option value="L">L</option>
+                                        <option value="cx">cx</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block mb-2">Data de Validade</label>
+                                <input type="date" id="add-expiry" class="w-full p-2 border rounded">
+                            </div>
+                            <div class="flex justify-end space-x-4">
+                                <button type="button" onclick="showPage('stock-page')" class="px-4 py-2 bg-gray-300 rounded">
+                                    Cancelar
+                                </button>
+                                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">
+                                    Adicionar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div id="edit-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4">
+                <div class="bg-white rounded-lg p-6 w-full max-w-md">
+                    <h3 class="text-xl font-bold mb-4">Editar Produto</h3>
+                    <form id="edit-form" class="space-y-4">
+                        <input type="hidden" id="edit-id">
+                        <div>
+                            <label for="edit-name" class="block mb-1">Nome</label>
+                            <input type="text" id="edit-name" class="w-full p-2 border rounded">
+                        </div>
+                        <div>
+                            <label for="edit-quantity" class="block mb-1">Quantidade</label>
+                            <input type="number" id="edit-quantity" class="w-full p-2 border rounded">
+                        </div>
+                        <div class="flex space-x-4">
+                            <button type="button" onclick="document.getElementById('edit-modal').classList.add('hidden')" class="px-4 py-2 bg-gray-300 rounded">
+                                Cancelar
+                            </button>
+                            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">
+                                Salvar
+            </button> 
+                                    </div>
+     </form>
+    </div>
+</div>
+</div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
